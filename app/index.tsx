@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FlatList, RefreshControl, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -64,10 +65,10 @@ export default function Index() {
       >
         <View className="flex-row justify-between items-center px-4 py-2">
           <View className="flex-row items-center flex-1 border-2 border-gray-300 rounded-md px-2">
-            <Text className="text-gray-400 mr-2">🔍</Text>
+            <Ionicons name="search" size={20} color="gray" className="mr-2 " />
             <TextInput
               placeholder="Search"
-              className="flex-1 py-2 "
+              className="flex-1 py-2 ml-2 text-gray-400"
             />
           </View>
         </View>
