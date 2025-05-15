@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   productCard: {
     width: '48%',
-    backgroundColor: '#fff',
+    backgroundColor: '#F4F4F4',
     borderRadius: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   productImageContainer: {
     width: '100%',
     height: 200,
-    backgroundColor: '#fff',
+    backgroundColor: '#F4F4F4',
     position: 'relative',
   },
   productImage: {
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'contain',
     padding: 16,
+    backgroundColor: '#F4F4F4',
   },
   favoriteButton: {
     position: 'absolute',

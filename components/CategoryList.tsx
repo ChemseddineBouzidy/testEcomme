@@ -42,12 +42,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   itemContainer: {
-    backgroundColor: 'gray',
+    backgroundColor: '#F4F4F4',
     opacity: 1,
-    borderWidth: 1,
-    borderColor: 'gray',
-    width: 80,
-    height: 80,
+    // borderWidth: 1,
+    // borderColor: 'gray',
+    width: 70,
+    height: 70,
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
