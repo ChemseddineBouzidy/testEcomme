@@ -1,20 +1,28 @@
-import React from 'react'
-import { FlatList, StyleSheet, Text, View } from 'react-native'
-const CategoryList = ({ categories }: { categories: any[] }) => {
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+const CategoryList = ({ categories, onSelectCategory, selected }: { categories: any[], onSelectCategory: (category: string) => void, selected: string }) => {
+  const categoryImages: { [key: string]: string } = {
+    "electronics": require("../assets/images/electronics.png"),
+    "jewelery": require("../assets/images/acce.png"),
+    "men's clothing": require("../assets/images/short.png"),
+    "women's clothing": require("../assets/images/clothes.png"),
+  };
   return (
     <View style={styles.container}>
       <FlatList
         horizontal={true}
         data={categories}
-        renderItem={({ item}) => {
+        renderItem={({ item }) => {
           return (
-            <View style={{alignItems: 'center', gap: 8}}>
-              <View style={styles.itemContainer} />
-              <Text style={styles.itemText}>{item}</Text>
-            </View>
+            <TouchableOpacity onPress={() => onSelectCategory(item)}>
+              <View style={{ alignItems: 'center', gap: 8 }}>
+                <Image source={categoryImages[item] || require("../assets/images/clothes.png")} style={styles.itemContainer} />
+                <Text style={styles.itemText}>{item}</Text>
+              </View>
+            </TouchableOpacity>
           )
         }}
         contentContainerStyle={styles.listContainer}
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   )
@@ -35,9 +43,9 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     backgroundColor: 'gray',
-    opacity: 0.5,
+    opacity: 1,
     borderWidth: 1,
-    borderColor: '#4E71FF',
+    borderColor: 'gray',
     width: 80,
     height: 80,
     borderRadius: 50,

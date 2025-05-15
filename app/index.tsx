@@ -1,11 +1,18 @@
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { FlatList, ScrollView, Text, TextInput, View } from "react-native";
+import { FlatList, RefreshControl, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import CategoryList from "../components/CategoryList";
 import ProductsCard from "../components/ProductsCard";
 import "../global.css";
 export default function Index() {
-  // categories
-  const [categories, setCategories] = useState<any[]>([])
+  const [categories, setCategories] = useState<any[]>([]);
+  // const [products, setProducts] = useState<any[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [search, setSearch] = useState<string>('');
+
+
+
+
   const url = "https://fakestoreapi.com/products/categories"
   useEffect(() => {
     const fetchCategories = async () => {
@@ -16,17 +23,37 @@ export default function Index() {
     }
     fetchCategories()
   }, [])
-  // products
-  const [products, setProducts] = useState<any[]>([])
+
   useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await fetch('https://fakestoreapi.com/products')
-      const data = await response.json()
-      setProducts(data)
-      console.log(data)
-    }
-    fetchProducts()
-  }, [])
+    // fetchProducts(); 
+  }, []);
+
+  const { data: productsData, isPending, error, refetch, isFetching } = useQuery({
+    queryKey: ['products', selectedCategory],
+    queryFn: async () => {
+      const url = selectedCategory
+        ? `https://fakestoreapi.com/products/category/${selectedCategory}`
+        : 'https://fakestoreapi.com/products';
+      const response = await fetch(url);
+      const data = await response.json();
+      // setProducts(data);
+      return data;
+    },
+    refetchInterval: 5000,
+
+  });
+  if (isPending) return 'Loading...'
+
+  if (error) return 'An error has occurred: ' + error.message
+
+
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category);
+    // fetchProducts();
+  };
+
+
+
   return (
     <ScrollView>
       <View
@@ -48,23 +75,42 @@ export default function Index() {
           <Text className="text-xl font-bold text-left ml-4">Categories</Text>
           <Text className="text-xl font-light text-right mr-4">See All</Text>
         </View>
-        <CategoryList categories={categories} />
+        <CategoryList categories={categories} onSelectCategory={handleCategorySelect} selected={selectedCategory || ''} />
+
       </View>
       <View className="flex-row justify-between items-center">
         <Text className="text-xl font-bold text-left ml-4 my-4">Top Selling</Text>
-        <Text className="text-xl font-light text-right mr-4">See All</Text>
+        <TouchableOpacity onPress={() => setSelectedCategory(null)} className="mr-4">
+          <Text className="text-xl font-light text-right">See All</Text>
+        </TouchableOpacity>
       </View>
       <FlatList
-        data={products}
+        data={productsData}
         renderItem={({ item }) => {
           return (
-           <ProductsCard  product={item}/>
+            <ProductsCard product={item} />
           )
         }}
+        refreshControl={
+          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
+        }
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ paddingHorizontal: 16 }}
+        numColumns={2}
+        columnWrapperStyle={styles.columnWrapper}
       />
- 
+
+
     </ScrollView>
   );
 }
+const styles = StyleSheet.create({
+  gridContainer: {
+    padding: 12,
+  },
+  columnWrapper: {
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+});
+
