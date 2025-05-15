@@ -1,4 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { router } from 'expo-router';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -6,11 +7,12 @@ interface Product {
   image: string;
   title: string;
   price: number;
+  id: number;
 }
 
 const ProductsCard = ({ product }: { product: Product }) => {
   return (
-    <TouchableOpacity style={styles.productCard}>
+    <TouchableOpacity style={styles.productCard} onPress={() => router.push(`/ProductDetails/${product.id}`)}>
       <View style={styles.productImageContainer}>
         <Image 
           source={{ uri: product.image }}
@@ -21,6 +23,7 @@ const ProductsCard = ({ product }: { product: Product }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.productDetails}>
+        <Text>{product.id}</Text>
         <Text style={styles.productName} numberOfLines={1}>{product.title}</Text>
         <View style={styles.priceContainer}>
           <Text style={styles.productPrice}>${product.price.toFixed(2)}</Text>

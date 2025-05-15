@@ -57,7 +57,7 @@ export default function Products() {
       // setProducts(data);
       return data;
     },
-    refetchInterval: 5000,
+    refetchInterval: 1000 * 60 ,
 
 
   });
